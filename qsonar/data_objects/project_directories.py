@@ -18,10 +18,14 @@ class ProjectDirectories:
 	kernel_matrix_configs_dir : str
 		Relative path to the directory containing configurations of kernel matrices.
 		Defaults to "kernel-matrix-configs/".
+	results_dir : str
+		Relative path to the directory containing classification results.
+		Defaults to "results/".
 	"""
 	working_dir: str
-	dataset_dir: str = "pe-machine-learning-dataset/"
+	dataset_dir: str = ""
 	kernel_matrix_configs_dir: str = "kernel-matrix-configs/"
+	results_dir: str = "results/"
 
 	def __str__(self):
 		"""
@@ -36,4 +40,5 @@ class ProjectDirectories:
 			f"working_dir: {self.working_dir}\n"
 			f"dataset_dir: {self.dataset_dir}\n"
 			f"kernel_matrix_configs_dir: {self.kernel_matrix_configs_dir}\n"
+			f"results_dir: {self.results_dir}\n"
 		)

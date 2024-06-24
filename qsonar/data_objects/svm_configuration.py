@@ -15,8 +15,6 @@ class SVMConfiguration:
 		Number of training samples.
 	test_size : int
 		Number of testing samples.
-	n_features: int
-		Number of features per sample.
 	n_qubits : int
 		Number of qubits to be used in the quantum SVM.
 	depth : int
@@ -58,7 +56,6 @@ class SVMConfiguration:
 	"""
 	train_size: int
 	test_size: int
-	n_features: int
 	n_qubits: int
 	depth: int
 	shots: int = None

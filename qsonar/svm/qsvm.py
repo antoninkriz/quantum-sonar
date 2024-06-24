@@ -5,6 +5,7 @@ import numpy as np
 import pickle
 from functools import reduce
 from typing import List, Tuple, Optional
+import re
 
 # src imports
 from qsonar.data_objects.project_directories import ProjectDirectories
@@ -16,6 +17,7 @@ from qsonar.svm.compute_uncompute_for_qiskit_ibm_runtime import ComputeUncompute
 # Scikit imports
 from sklearn.svm import SVC
 from sklearn.metrics import f1_score
+from sklearn.metrics import recall_score
 
 # Qiskit imports
 from qiskit import QuantumCircuit
@@ -65,7 +67,7 @@ class QSVM:
 	def classify(
 		self,
 		feature_map_type: str
-	) -> Tuple[Optional[float], Optional[float]]:
+	) -> Tuple[Optional[float], Optional[float], Optional[float]]:
 		"""
 		Perform quantum classification using a specified quantum feature map.
 
@@ -99,7 +101,7 @@ class QSVM:
 			matrix_train, matrix_test = self.__evaluate_on_ibm_hardware(feature_map_type)
 			# matrix_train or matrix_test are None if the runtime jobs were just submitted
 			if matrix_train is None or matrix_test is None:
-				return None, None
+				return None, None, None
 
 		# Classification
 		qsvc = SVC(kernel='precomputed')
@@ -110,8 +112,9 @@ class QSVM:
 		predicted_labels = qsvc.predict(matrix_test)
 		accuracy = qsvc.score(matrix_test, self._config.test_labels)
 		f1 = f1_score(self._config.test_labels, predicted_labels, average='weighted')
+		recall = recall_score(self._config.test_labels, predicted_labels)
 
-		return accuracy, f1
+		return accuracy, f1, recall
 
 	def __evaluate_on_simulator(
 		self,
@@ -203,7 +206,8 @@ class QSVM:
 		# Run on the provided backend
 		# backend = service.backend(self._config.ibm_backend)
 		backend = service.least_busy(simulator=False, operational=True, min_num_qubits=4)
-		self._config.ibm_backend = str(backend)
+		re_backend = re.match(r"\<IBMBackend\('([^']+)'\)\>", str(backend)).group(1)
+		self._config.ibm_backend = str(re_backend)
 
 		fidelity = ComputeUncomputeForIBMQuantum(backend=backend, simulator=False, shots=self._config.shots)
 		kernel = FidelityQuantumKernelForIBMQuantum(feature_map=feature_map, fidelity=fidelity)

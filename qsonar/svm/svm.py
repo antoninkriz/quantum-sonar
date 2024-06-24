@@ -2,6 +2,7 @@
 
 # General imports
 from typing import Tuple, List, Optional
+from sklearn.metrics import recall_score
 
 # src imports
 from qsonar.data_objects.project_directories import ProjectDirectories
@@ -88,18 +89,20 @@ class SVM:
 
 			for feature_map_type in feature_maps:
 				print(f'{feature_map_type}FeatureMap')
-				accuracy, f1 = qsvm.classify(feature_map_type)
+				accuracy, f1, recall = qsvm.classify(feature_map_type)
 				if self._config.runtime_jobs_completed is not False:
 					# Either it's on simulator or they finished -> print results
 					print(f'accuracy: {accuracy:.3f}')
-					print(f'f1: {f1:.3f}\n')
+					print(f'f1: {f1:.3f}')
+					print(f'recall: {recall:.3f}\n')
 
 		if classical_kernels:
 			for kernel in classical_kernels:
 				print(f'{kernel}')
-				accuracy, f1 = self.__classical_classification(kernel)
+				accuracy, f1, recall = self.__classical_classification(kernel)
 				print(f'accuracy: {accuracy:.3f}')
-				print(f'f1: {f1:.3f}\n')
+				print(f'f1: {f1:.3f}')
+				print(f'recall: {recall:.3f}\n')
 
 	def __classical_classification(
 		self,
@@ -126,8 +129,10 @@ class SVM:
 		predicted_labels = classical_svc.predict(self._config.test_samples)
 		accuracy = classical_svc.score(self._config.test_samples, self._config.test_labels)
 		f1 = f1_score(self._config.test_labels, predicted_labels, average='weighted')
+		recall = recall_score(self._config.test_labels, predicted_labels)
 
-		return accuracy, f1
+
+		return accuracy, f1, recall
 
 	@property
 	def configuration(self) -> SVMConfiguration:
