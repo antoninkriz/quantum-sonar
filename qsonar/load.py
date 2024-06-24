@@ -5,6 +5,7 @@ import zipfile
 import numpy as np
 import pandas as pd
 import requests
+from sklearn.decomposition import PCA
 from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import train_test_split
 
@@ -39,7 +40,7 @@ def load_data_from_internet(cache_file_path: str = CACHED_DATA_FILE) -> pd.DataF
     return pd.read_csv(cache_file_path, header=None, names=[f'f{i}' for i in range(60)] + ['Y'])
 
 
-def scale_and_split(dataframe: pd.DataFrame, test_size: float = 0.2, random_state: int = 1337) -> tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
+def scale_and_split(dataframe: pd.DataFrame, test_size: float = 0.2, pca_components: int = None, random_state: int = 1337) -> tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
     '''
     Returns X_train, X_test, y_train, y_test after scaling the features and splitting the data.
 
@@ -50,6 +51,10 @@ def scale_and_split(dataframe: pd.DataFrame, test_size: float = 0.2, random_stat
     y = dataframe['Y']
 
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=test_size, random_state=random_state)
+
+    pca = PCA(n_components=pca_components, random_state=random_state)
+    X_train = pca.fit_transform(X_train)
+    X_test = pca.transform(X_test)
 
     scaler = StandardScaler()
     X_train = scaler.fit_transform(X_train)
