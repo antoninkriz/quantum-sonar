@@ -28,6 +28,7 @@ class Metrics:
 
 
 
+# (NOT) "Test" class for Metrics
 class MetricsTest:
     def __init__(self):
         val_curr = [0, 0.9, 0, 0, 0.5, 0.9, 0.9, 0, 0.9, 0.9]  # predicted validation labels
