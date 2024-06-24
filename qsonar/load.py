@@ -2,8 +2,11 @@ import io
 import os
 import zipfile
 
+import numpy as np
 import pandas as pd
 import requests
+from sklearn.preprocessing import StandardScaler
+from sklearn.model_selection import train_test_split
 
 
 DATA_URL = 'https://archive.ics.uci.edu/static/public/151/connectionist+bench+sonar+mines+vs+rocks.zip'
@@ -34,3 +37,22 @@ def load_data_from_internet(cache_file_path: str = CACHED_DATA_FILE) -> pd.DataF
                 cache_file.write(contents)
 
     return pd.read_csv(cache_file_path, header=None, names=[f'f{i}' for i in range(60)] + ['Y'])
+
+
+def scale_and_split(dataframe: pd.DataFrame, test_size: float = 0.2, random_state: int = 1337) -> tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
+    '''
+    Returns X_train, X_test, y_train, y_test after scaling the features and splitting the data.
+
+    X_train and X_test are is numpy arrays with the features scaled using StandardScaler as float64.
+    Y_train and Y_test are numpy arrays with the target values as boolean. True for 'M'ines and False for 'R'ocks.
+    '''
+    X = dataframe.drop(columns=['Y'])
+    y = dataframe['Y']
+
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=test_size, random_state=random_state)
+
+    scaler = StandardScaler()
+    X_train = scaler.fit_transform(X_train)
+    X_test = scaler.transform(X_test)
+
+    return X_train, X_test, y_train == 'M', y_test == 'M'
