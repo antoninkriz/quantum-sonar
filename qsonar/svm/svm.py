@@ -4,9 +4,9 @@
 from typing import Tuple, List, Optional
 
 # src imports
-from qsonar.data_objects import ProjectDirectories
+from qsonar.data_objects.project_directories import ProjectDirectories
 from qsonar.data_objects.svm_configuration import SVMConfiguration
-from qsonar.svm import QSVM
+from qsonar.svm.qsvm import QSVM
 
 # Scikit imports
 from sklearn.svm import SVC
