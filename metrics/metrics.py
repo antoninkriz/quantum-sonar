@@ -50,15 +50,15 @@ class Metrics:
 # Test class for Metrics
 class MetricsTest:
     def __init__(self):
-        val_curr = [0, 1, 0, 0, 1, 1, 1, 0, 1, 1]  # predicted validation labels
-        val_real = [0, 1, 0, 0, 1, 1, 1, 0, 1, 1]  # true validation labels
+        val_curr = [0, 1, 0, 0, 1, 1, 0, 0, 0, 1, 0]  # predicted validation labels
+        val_real = [0, 1, 0, 0, 1, 1, 1, 0, 1, 1, 1]  # true validation labels
         self.metrics = Metrics(val_curr, val_real)
 
     # Calculate and print accuracy, recall, precision, and f-measure for validation data
     def runTest(self) -> None:
         print("Recall:", round(self.metrics.recall(), 4))
         print("RMSE:", round(self.metrics.rmse(), 4))
-        print("MSE:", round(self.metrics.rmse(), 4))
+        print("MSE:", round(self.metrics.mse(), 4))
         print("Accuracy:", round(self.metrics.accuracy(), 4))
         print("Precision:", round(self.metrics.precision(), 4))
         print("F-measure:", round(self.metrics.f_measure(), 4))
