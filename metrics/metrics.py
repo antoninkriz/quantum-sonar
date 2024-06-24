@@ -7,31 +7,22 @@ class Metrics:
         self.val_curr = np.array(val_curr)
         self.val_real = np.array(val_real)
 
-    def _recall(self, curr, real):
+    def _recall(self, curr, real): # Hard recall
         # Calculate recall
         true_positives = np.sum(np.logical_and(curr >= 0.5, real >= 0.5))
         possible_positives = np.sum(real >= 0.5)
         recall = true_positives / (possible_positives + 1e-9)
         return recall
 
-    def _rmse_recall(self, curr, real):
-        return math.sqrt(sum((curr - real) ** 2) / len(real))
+    def _rmse_recall(self, curr, real): # Soft recall
+        rmse = math.sqrt(np.mean((curr - real) ** 2))
+        return rmse
 
-    def _accuracy(self, curr, real):
-        # Calculate accuracy
-        correct = np.sum(curr == real)
-        total = len(real)
-        acc = correct / total
-        return acc
+    def recall(self):
+        return round(self._recall(self.val_curr, self.val_real), 4)
 
-    def val_recall(self):
-        return self._recall(self.val_curr, self.val_real)
-
-    def val_rmse_recall(self):
-        return self._rmse_recall(self.val_curr, self.val_real)
-
-    def val_accuracy(self):
-        return self._accuracy(self.val_curr, self.val_real)
+    def rmse_recall(self):
+        return 1 - round(self._rmse_recall(self.val_curr, self.val_real), 4)
 
 
 
@@ -39,15 +30,15 @@ class Metrics:
 
 class MetricsTest:
     def __init__(self):
-        val_curr = [0, 0.2, 0.1, 0, 0.5, 0.3, 0, 0, 0.9, 0]  # predicted validation labels
+        val_curr = [0, 0.9, 0, 0, 0.5, 0.9, 0.9, 0, 0.9, 0.9]  # predicted validation labels
         val_real = [0, 1, 0, 0, 1, 1, 1, 0, 1, 1]  # true validation labels
 
         self.metrics = Metrics(val_curr, val_real)
 
     def runTest(self):
         # Calculate and print accuracy and recall for validation and training data
-        print("Validation rmse Recall:", self.metrics.val_rmse_recall())
-        print("Validation Recall:", self.metrics.val_recall())
+        print("Validation rmse Recall:", self.metrics.rmse_recall())
+        print("Validation Recall:", self.metrics.recall())
 
 if __name__ == "__main__":
     test = MetricsTest()
