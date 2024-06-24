@@ -3,7 +3,6 @@
 # General imports
 import numpy as np
 import pickle
-import time
 from functools import reduce
 from typing import List, Tuple, Optional
 
@@ -105,21 +104,12 @@ class QSVM:
 		# Classification
 		qsvc = SVC(kernel='precomputed')
 
-		# Measure training time
-		start_time = time.time()
-
 		# Train model
 		qsvc.fit(matrix_train, self._config.train_labels)
-
-		end_time = time.time()
 
 		predicted_labels = qsvc.predict(matrix_test)
 		accuracy = qsvc.score(matrix_test, self._config.test_labels)
 		f1 = f1_score(self._config.test_labels, predicted_labels, average='weighted')
-
-		# Calculate the elapsed time
-		elapsed_time = end_time - start_time
-		print(f'Training time:{elapsed_time: .6f} seconds')
 
 		return accuracy, f1
 
@@ -211,9 +201,9 @@ class QSVM:
 		service = QiskitRuntimeService()
 
 		# Run on the provided backend
-		backend = service.backend(self._config.ibm_backend)
-		# backend = service.least_busy(simulator=False, operational=True, min_num_qubits=4)
-		# self._config.ibm_backend = str(backend)
+		# backend = service.backend(self._config.ibm_backend)
+		backend = service.least_busy(simulator=False, operational=True, min_num_qubits=4)
+		self._config.ibm_backend = str(backend)
 
 		fidelity = ComputeUncomputeForIBMQuantum(backend=backend, simulator=False, shots=self._config.shots)
 		kernel = FidelityQuantumKernelForIBMQuantum(feature_map=feature_map, fidelity=fidelity)
