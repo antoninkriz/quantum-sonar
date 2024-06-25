@@ -15,8 +15,8 @@ class Metrics:
         self.FN = None
 
     def add_data(self, val_curr, val_real, qubit_count):
-        self.val_curr = np.array(val_curr)
-        self.val_real = np.array(val_real)
+        self.val_curr = val_curr
+        self.val_real = val_real
         self.qubit_count = qubit_count
 
         # Calculate TP, TN, FP, FN
@@ -62,28 +62,59 @@ class Metrics:
             return 0.0
         return 2 * (precision * recall) / (precision + recall)
 
-    # def draw_recall_accuracy(self):
-    #
-    #     # Extract values and field from show_data
-    #     values = [[el[0], el[3]*100] for el in self.show_data] # recall and accuracy
-    #     field = [el[-1] for el in self.show_data] # qubit count
-    #
-    #
-    #
-    #     print("Values:", values)
-    #     print("Field:", field)
-    #     plt.scatter(field, [el[0] for el in values], color='red', label='Accuracy')
-    #     plt.bar(field, [el[1] for el in values], color='blue', label='Recall')
-    #     plt.show()
+    # Draw graphs
+    def draw_recall(self, data, qubits):
+        plt.xlabel('Dimension')
+        plt.ylabel('Recall')
+        plt.title('Recall of the model')
 
-    def draw_dim_data(self, data, qubits):
+        plt.bar(qubits, [el[0] for el in data], color='blue', label='Recall')
+        plt.legend(loc='lower right')
+        plt.show()
 
-        plt.scatter(qubits, [el[0] for el in data], color='red', label='Dimension')
-        plt.plot(qubits, [el[0] for el in data], color='red', linestyle='-', linewidth=5)
+    def draw_accuracy(self, data, qubits):
+        plt.xlabel('Dimension')
+        plt.ylabel('Accuracy')
+        plt.title('Accuracy of the model')
 
-        plt.bar(qubits, [el[1] for el in data], color='blue', label='data')
+        plt.bar(qubits, [el[3]*100 for el in data], color='red', label='Recall')
+        plt.legend(loc='lower right')
+        plt.show()
 
+    def draw_rmse(self, data, qubits):
+        plt.xlabel('Dimension')
+        plt.ylabel('RMSE')
+        plt.title('RMSE of the model')
 
+        plt.bar(qubits, [el[1] for el in data], color='orange', label='Recall')
+        plt.legend(loc='lower right')
+        plt.show()
+
+    def draw_mse(self, data, qubits):
+        plt.xlabel('Dimension')
+        plt.ylabel('MSE')
+        plt.title('MSE of the model')
+
+        plt.bar(qubits, [el[2] for el in data], color='brown', label='Recall')
+        plt.legend(loc='lower right')
+        plt.show()
+
+    def draw_precision(self, data, qubits):
+        plt.xlabel('Dimension')
+        plt.ylabel('Precision')
+        plt.title('Precision of the model')
+
+        plt.bar(qubits, [el[4] for el in data], color='grey', label='Recall')
+        plt.legend(loc='lower right')
+        plt.show()
+
+    def draw_f_measure(self, data, qubits):
+        plt.xlabel('Dimension')
+        plt.ylabel('F-measure')
+        plt.title('F-measure of the model')
+
+        plt.bar(qubits, [el[5] for el in data], color='pink', label='Recall')
+        plt.legend(loc='lower right')
         plt.show()
 
 # Test class for Metrics
@@ -102,51 +133,20 @@ class MetricsTest:
         print("--------------------")
 
     def runTest(self) -> None:
-        self.val_curr = [0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0]  # predicted validation labels
-        self.val_real = [0, 1, 0, 0, 1, 1, 1, 0, 1, 1, 1]  # true validation labels
         self.metrics = Metrics()
 
-        self.metrics.add_data(self.val_curr, self.val_real, 1)
-        self.print_metrics()
-
-        self.val_curr = [0, 1, 0, 0, 0, 1, 1, 0, 1, 0, 0]  # predicted labels
-        self.val_real = [0, 0, 0, 0, 0, 1, 1, 0, 1, 1, 1]  # real labels
-        self.metrics.add_data(self.val_curr, self.val_real, 2)
-        self.print_metrics()
-
-        self.val_curr = [0, 0.5, 0, 0, 0, 1, 1, 0, 1, 0, 0]  # predicted labels
-        self.val_real = [0, 0, 0, 0, 0, 1, 1, 0, 1, 1, 1]  # real labels
-        self.metrics.add_data(self.val_curr, self.val_real, 3)
-        self.print_metrics()
-
-        self.val_curr = [0, 0.6, 0, 0, 0, 0.6, 0, 0, 1, 1, 1]  # predicted labels
-        self.val_real = [0, 1, 0, 0, 0, 1, 1, 0, 1, 1, 1]  # real labels
-        self.metrics.add_data(self.val_curr, self.val_real, 4)
-        self.print_metrics()
-
-        self.val_curr = [0, 1, 0, 0, 0, 1, 0, 0, 1, 1, 0.9]  # predicted labels
-        self.val_real = [0, 1, 0, 0, 0, 1, 1, 0, 1, 1, 1]  # real labels
-        self.metrics.add_data(self.val_curr, self.val_real, 5)
-        self.print_metrics()
-
-        self.val_curr = [0, 1, 0, 0, 0, 1, 0, 0, 1, 0.3, 0.8]  # predicted labels
-        self.val_real = [0, 1, 0, 0, 0, 1, 1, 0, 1, 1, 1]  # real labels
-        self.metrics.add_data(self.val_curr, self.val_real, 6)
-        self.print_metrics()
-
-        self.val_curr = [0, 1, 0, 0, 0, 1, 0, 0, 1, 1, 0.5]  # predicted labels
-        self.val_real = [0, 1, 0, 0, 0, 1, 1, 0, 1, 1, 1]  # real labels
-        self.metrics.add_data(self.val_curr, self.val_real, 7)
-        self.print_metrics()
-
-        self.val_curr = [0, 1, 0, 0, 0, 1, 1, 0, 1, 1, 0.3]  # predicted labels
-        self.val_real = [0, 1, 0, 0, 0, 1, 1, 0, 1, 1, 1]  # real labels
-        self.metrics.add_data(self.val_curr, self.val_real, 8)
-        self.print_metrics()
+        for i in range(60, 1, -1):
+            self.val_curr = np.random.randint(0, 2, size=60)
+            self.val_real = np.random.randint(0, 2, size=60)
+            self.metrics.add_data(self.val_curr, self.val_real, 2)
 
         # Show graph
-        # self.metrics.draw_recall_accuracy()
-        self.metrics.draw_dim_data(self.metrics.show_data, [1, 2, 3, 4, 5, 6, 7, 8])
+        self.metrics.draw_recall(self.metrics.show_data, range(60, 1, -1))
+        self.metrics.draw_accuracy(self.metrics.show_data, range(60, 1, -1))
+        self.metrics.draw_rmse(self.metrics.show_data, range(60, 1, -1))
+        self.metrics.draw_mse(self.metrics.show_data, range(60, 1, -1))
+        self.metrics.draw_precision(self.metrics.show_data, range(60, 1, -1))
+        self.metrics.draw_f_measure(self.metrics.show_data, range(60, 1, -1))
 
 if __name__ == "__main__":
     test = MetricsTest()
