@@ -176,6 +176,15 @@ class MetricsTest:
         self.metrics.draw_f_measure(self.metrics.show_data, range(60, 1, -1))
 
 def double_metrics():
+    '''
+    Compare metrics of two models. Quantum and Classic.
+    Graph show Recall of Quantum and Classic models for each dimension (qubits).
+    pipeline:
+    1. Create Metrics object for Quantum and Classic models.
+    2. Add data of current and real values for 10 qubits.
+    3. Print metrics for each dimension.
+    '''
+
     quantum_metrics = Metrics("QSVM")
     classic_metrics = Metrics("SVM")
 
@@ -210,15 +219,21 @@ def double_metrics():
     plt.show()
 
 
-def run_time_graph():
+def training_run_time_graph():
+    '''
+    Compare metrics of two models. Quantum and Classic.
+    Graph show Time of training of Quantum and Classic models for each dimension (qubits).
+    pipeline:
+    1. Create Metrics object for Quantum and Classic models.
+    2. Add data of training time for 10 qubits.
+    3. Print metrics for each dimension.
+    '''
+
     quantum_metrics = Metrics("QSVM")
     classic_metrics = Metrics("SVM")
 
-
-    pass
-
 if __name__ == "__main__":
-    # testmetrics = MetricsTest()
-    # testmetrics.runTest()
+    testmetrics = MetricsTest()
+    testmetrics.runTest()
 
     double_metrics()
