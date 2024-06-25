@@ -4,7 +4,7 @@ from collections import Counter
 
 # Class to calculate accuracy, recall, precision, and f-measure for validation and training data
 class Metrics:
-    def __init__(self):
+    def __init__(self, name: str):
         '''
         Metrics class for calculating accuracy, recall, precision, and f-measure for validation and training data.
         Pipeline:
@@ -12,6 +12,7 @@ class Metrics:
         2. Add data of current and real values for 60 qubits (dimensions).
         3. Print/show metrics for each dimension.
         '''
+        self.name = name
         self.val_curr = None
         self.val_real = None
         self.qubit_count = None
@@ -80,7 +81,7 @@ class Metrics:
     def draw_recall(self, data: list, qubits: list) -> None:
         plt.xlabel('Dimension')
         plt.ylabel('Recall')
-        plt.title('Recall of the model')
+        plt.title('Recall of the ' + self.name + ' model')
 
         plt.bar(qubits, [el[0] for el in data], color='blue', label='Recall')
         plt.legend(loc='lower right')
@@ -89,7 +90,7 @@ class Metrics:
     def draw_accuracy(self, data: list, qubits: list) -> None:
         plt.xlabel('Dimension')
         plt.ylabel('Accuracy')
-        plt.title('Accuracy of the model')
+        plt.title('Accuracy of the ' + self.name + ' model')
 
         plt.bar(qubits, [el[3]*100 for el in data], color='red', label='Accuracy')
         plt.legend(loc='lower right')
@@ -98,7 +99,7 @@ class Metrics:
     def draw_rmse(self, data: list, qubits: list) -> None:
         plt.xlabel('Dimension')
         plt.ylabel('RMSE')
-        plt.title('RMSE of the model')
+        plt.title('RMSE of the ' + self.name + ' model')
 
         plt.bar(qubits, [el[1] for el in data], color='orange', label='Rmse')
         plt.legend(loc='lower right')
@@ -107,7 +108,7 @@ class Metrics:
     def draw_mse(self, data: list, qubits: list) -> None:
         plt.xlabel('Dimension')
         plt.ylabel('MSE')
-        plt.title('MSE of the model')
+        plt.title('MSE of the ' + self.name + ' model')
 
         plt.bar(qubits, [el[2] for el in data], color='brown', label='Mse')
         plt.legend(loc='lower right')
@@ -116,7 +117,7 @@ class Metrics:
     def draw_precision(self, data: list, qubits: list) -> None:
         plt.xlabel('Dimension')
         plt.ylabel('Precision')
-        plt.title('Precision of the model')
+        plt.title('Precision of the ' + self.name + ' model')
 
         plt.bar(qubits, [el[4] for el in data], color='grey', label='Precision')
         plt.legend(loc='lower right')
@@ -125,11 +126,12 @@ class Metrics:
     def draw_f_measure(self, data: list, qubits: list) -> None:
         plt.xlabel('Dimension')
         plt.ylabel('F-measure')
-        plt.title('F-measure of the model')
+        plt.title('F-measure of the ' + self.name + ' model')
 
         plt.bar(qubits, [el[5] for el in data], color='pink', label='F-measure')
         plt.legend(loc='lower right')
         plt.show()
+
 
 # Test class for Metrics
 class MetricsTest:
@@ -156,7 +158,7 @@ class MetricsTest:
         3. Print metrics for each dimension.
         '''
 
-        self.metrics = Metrics()
+        self.metrics = Metrics("Test")
 
         for i in range(60, 1, -1):
             self.val_curr = np.random.randint(0, 2, size=10)
@@ -173,6 +175,42 @@ class MetricsTest:
         self.metrics.draw_precision(self.metrics.show_data, range(60, 1, -1))
         self.metrics.draw_f_measure(self.metrics.show_data, range(60, 1, -1))
 
+def double_metrics():
+    quantum_metrics = Metrics("QSVM")
+    classic_metrics = Metrics("SVM")
+
+    val_curr = []
+    val_real = []
+
+    for i in range(9, 0, -1):
+        val_curr = np.random.randint(0, 2, size=10)
+        val_real = np.random.randint(0, 2, size=10)
+        quantum_metrics.add_data(val_curr, val_real, i)
+
+    for i in range(9, 0, -1):
+        val_curr = np.random.randint(0, 2, size=10)
+        val_real = np.random.randint(0, 2, size=10)
+        classic_metrics.add_data(val_curr, val_real, i)
+
+    # Data
+    quantum_recall = [el[0] for el in quantum_metrics.show_data]
+    classic_recall = [el[0] for el in classic_metrics.show_data]
+
+    n = len(quantum_recall)
+    ind = np.arange(n)
+
+    width = 0.35
+    plt.bar(ind, quantum_recall, width, color='royalblue', label='Quantum Recall')
+    plt.bar(ind + width, classic_recall, width, color='orangered', label='Classic Recall')
+
+    plt.xlabel('Dimension (Qubit)')
+    plt.ylabel('Recall')
+
+    plt.legend(loc='lower right')
+    plt.show()
+
 if __name__ == "__main__":
-    test = MetricsTest()
-    test.runTest()
+    # testmetrics = MetricsTest()
+    # testmetrics.runTest()
+
+    double_metrics()
