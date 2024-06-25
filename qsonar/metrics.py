@@ -5,6 +5,13 @@ from collections import Counter
 # Class to calculate accuracy, recall, precision, and f-measure for validation and training data
 class Metrics:
     def __init__(self):
+        '''
+        Metrics class for calculating accuracy, recall, precision, and f-measure for validation and training data.
+        Pipeline:
+        1. Create Metrics object.
+        2. Add data of current and real values for 60 qubits (dimensions).
+        3. Print/show metrics for each dimension.
+        '''
         self.val_curr = None
         self.val_real = None
         self.qubit_count = None
@@ -15,6 +22,13 @@ class Metrics:
         self.FN = None
 
     def add_data(self, val_curr, val_real, qubit_count):
+        '''
+        Add data to the metrics class.
+        :param val_curr: Current values
+        :param val_real: Real values
+        :param qubit_count: Number of qubits
+        '''
+
         self.val_curr = val_curr
         self.val_real = val_real
         self.qubit_count = qubit_count
@@ -133,14 +147,25 @@ class MetricsTest:
         print("--------------------")
 
     def runTest(self) -> None:
+        '''
+        Run test for Metrics class.
+        Test example: Random data for 60 qubits.
+        Pipeline:
+        1. Create Metrics object.
+        2. Add data of current and real values for 60 qubits (dimensions).
+        3. Print metrics for each dimension.
+        '''
+
         self.metrics = Metrics()
 
         for i in range(60, 1, -1):
-            self.val_curr = np.random.randint(0, 2, size=60)
-            self.val_real = np.random.randint(0, 2, size=60)
-            self.metrics.add_data(self.val_curr, self.val_real, 2)
+            self.val_curr = np.random.randint(0, 2, size=10)
+            self.val_real = np.random.randint(0, 2, size=10)
+            self.metrics.add_data(self.val_curr, self.val_real, i)
 
-        # Show graph
+        self.show_graphs()
+
+    def show_graphs(self):
         self.metrics.draw_recall(self.metrics.show_data, range(60, 1, -1))
         self.metrics.draw_accuracy(self.metrics.show_data, range(60, 1, -1))
         self.metrics.draw_rmse(self.metrics.show_data, range(60, 1, -1))
