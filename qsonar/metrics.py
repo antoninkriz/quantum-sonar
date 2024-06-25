@@ -91,7 +91,7 @@ class Metrics:
         plt.ylabel('Accuracy')
         plt.title('Accuracy of the model')
 
-        plt.bar(qubits, [el[3]*100 for el in data], color='red', label='Recall')
+        plt.bar(qubits, [el[3]*100 for el in data], color='red', label='Accuracy')
         plt.legend(loc='lower right')
         plt.show()
 
@@ -100,7 +100,7 @@ class Metrics:
         plt.ylabel('RMSE')
         plt.title('RMSE of the model')
 
-        plt.bar(qubits, [el[1] for el in data], color='orange', label='Recall')
+        plt.bar(qubits, [el[1] for el in data], color='orange', label='Rmse')
         plt.legend(loc='lower right')
         plt.show()
 
@@ -109,7 +109,7 @@ class Metrics:
         plt.ylabel('MSE')
         plt.title('MSE of the model')
 
-        plt.bar(qubits, [el[2] for el in data], color='brown', label='Recall')
+        plt.bar(qubits, [el[2] for el in data], color='brown', label='Mse')
         plt.legend(loc='lower right')
         plt.show()
 
@@ -118,7 +118,7 @@ class Metrics:
         plt.ylabel('Precision')
         plt.title('Precision of the model')
 
-        plt.bar(qubits, [el[4] for el in data], color='grey', label='Recall')
+        plt.bar(qubits, [el[4] for el in data], color='grey', label='Precision')
         plt.legend(loc='lower right')
         plt.show()
 
@@ -127,7 +127,7 @@ class Metrics:
         plt.ylabel('F-measure')
         plt.title('F-measure of the model')
 
-        plt.bar(qubits, [el[5] for el in data], color='pink', label='Recall')
+        plt.bar(qubits, [el[5] for el in data], color='pink', label='F-measure')
         plt.legend(loc='lower right')
         plt.show()
 
