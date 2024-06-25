@@ -21,7 +21,7 @@ class Metrics:
         self.FP = None
         self.FN = None
 
-    def add_data(self, val_curr, val_real, qubit_count):
+    def add_data(self, val_curr: list, val_real: list, qubit_count: list):
         '''
         Add data to the metrics class.
         :param val_curr: Current values
@@ -77,7 +77,7 @@ class Metrics:
         return 2 * (precision * recall) / (precision + recall)
 
     # Draw graphs
-    def draw_recall(self, data, qubits):
+    def draw_recall(self, data: list, qubits: list) -> None:
         plt.xlabel('Dimension')
         plt.ylabel('Recall')
         plt.title('Recall of the model')
@@ -86,7 +86,7 @@ class Metrics:
         plt.legend(loc='lower right')
         plt.show()
 
-    def draw_accuracy(self, data, qubits):
+    def draw_accuracy(self, data: list, qubits: list) -> None:
         plt.xlabel('Dimension')
         plt.ylabel('Accuracy')
         plt.title('Accuracy of the model')
@@ -95,7 +95,7 @@ class Metrics:
         plt.legend(loc='lower right')
         plt.show()
 
-    def draw_rmse(self, data, qubits):
+    def draw_rmse(self, data: list, qubits: list) -> None:
         plt.xlabel('Dimension')
         plt.ylabel('RMSE')
         plt.title('RMSE of the model')
@@ -104,7 +104,7 @@ class Metrics:
         plt.legend(loc='lower right')
         plt.show()
 
-    def draw_mse(self, data, qubits):
+    def draw_mse(self, data: list, qubits: list) -> None:
         plt.xlabel('Dimension')
         plt.ylabel('MSE')
         plt.title('MSE of the model')
@@ -113,7 +113,7 @@ class Metrics:
         plt.legend(loc='lower right')
         plt.show()
 
-    def draw_precision(self, data, qubits):
+    def draw_precision(self, data: list, qubits: list) -> None:
         plt.xlabel('Dimension')
         plt.ylabel('Precision')
         plt.title('Precision of the model')
@@ -122,7 +122,7 @@ class Metrics:
         plt.legend(loc='lower right')
         plt.show()
 
-    def draw_f_measure(self, data, qubits):
+    def draw_f_measure(self, data: list, qubits: list) -> None:
         plt.xlabel('Dimension')
         plt.ylabel('F-measure')
         plt.title('F-measure of the model')
@@ -137,7 +137,7 @@ class MetricsTest:
         pass
 
     # Calculate and print accuracy, recall, precision, and f-measure for validation data
-    def print_metrics(self):
+    def print_metrics(self) -> None:
         print("Recall:", round(self.metrics.recall(), 4))
         print("RMSE:", round(self.metrics.rmse(), 4))
         print("MSE:", round(self.metrics.mse(), 4))
