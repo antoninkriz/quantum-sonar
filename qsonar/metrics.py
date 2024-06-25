@@ -12,6 +12,7 @@ class Metrics:
         2. Add data of current and real values for 60 qubits (dimensions).
         3. Print/show metrics for each dimension.
         '''
+
         self.name = name
         self.val_curr = None
         self.val_real = None
@@ -184,11 +185,11 @@ def double_metrics():
     2. Add data of current and real values for 10 qubits.
     3. Print metrics for each dimension.
     '''
+
     quantum_metrics = Metrics("QSVM")
     classic_metrics = Metrics("SVM")
 
-    # Random data
-
+    # Example of random data
     # val_curr = []
     # val_real = []
     # for i in range(9, 0, -1):
@@ -220,7 +221,6 @@ def double_metrics():
     plt.legend(loc='lower right')
     plt.show()
 
-
 def training_run_time_graph():
     '''
     Compare metrics of two models. Quantum and Classic.
@@ -235,7 +235,6 @@ def training_run_time_graph():
     classic_metrics = Metrics("SVM")
 
 if __name__ == "__main__":
-    # testmetrics = MetricsTest()
-    # testmetrics.runTest()
-
+    testmetrics = MetricsTest()
+    testmetrics.runTest()
     double_metrics()
