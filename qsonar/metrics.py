@@ -209,6 +209,14 @@ def double_metrics():
     plt.legend(loc='lower right')
     plt.show()
 
+
+def run_time_graph():
+    quantum_metrics = Metrics("QSVM")
+    classic_metrics = Metrics("SVM")
+
+
+    pass
+
 if __name__ == "__main__":
     # testmetrics = MetricsTest()
     # testmetrics.runTest()
