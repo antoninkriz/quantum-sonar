@@ -184,26 +184,28 @@ def double_metrics():
     2. Add data of current and real values for 10 qubits.
     3. Print metrics for each dimension.
     '''
-
     quantum_metrics = Metrics("QSVM")
     classic_metrics = Metrics("SVM")
 
-    val_curr = []
-    val_real = []
+    # Random data
 
-    for i in range(9, 0, -1):
-        val_curr = np.random.randint(0, 2, size=10)
-        val_real = np.random.randint(0, 2, size=10)
-        quantum_metrics.add_data(val_curr, val_real, i)
+    # val_curr = []
+    # val_real = []
+    # for i in range(9, 0, -1):
+    #     val_curr = np.random.randint(0, 2, size=10)
+    #     val_real = np.random.randint(0, 2, size=10)
+    #     quantum_metrics.add_data(val_curr, val_real, i)
+    #
+    # for i in range(9, 0, -1):
+    #     val_curr = np.random.randint(0, 2, size=10)
+    #     val_real = np.random.randint(0, 2, size=10)
+    #     classic_metrics.add_data(val_curr, val_real, i)
+    # quantum_recall = [el[0] for el in quantum_metrics.show_data]
+    # classic_recall = [el[0] for el in classic_metrics.show_data]
 
-    for i in range(9, 0, -1):
-        val_curr = np.random.randint(0, 2, size=10)
-        val_real = np.random.randint(0, 2, size=10)
-        classic_metrics.add_data(val_curr, val_real, i)
-
-    # Data
-    quantum_recall = [el[0] for el in quantum_metrics.show_data]
-    classic_recall = [el[0] for el in classic_metrics.show_data]
+    # Test data
+    quantum_recall = [0.484, 0.532, 0.668, 0.636, 0.673, 0.682, 0.690, 0.773, 0.682, 0.727]
+    classic_recall = [0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 0.8, 0.7, 0.6, 0.5]
 
     n = len(quantum_recall)
     ind = np.arange(n)
@@ -233,7 +235,7 @@ def training_run_time_graph():
     classic_metrics = Metrics("SVM")
 
 if __name__ == "__main__":
-    testmetrics = MetricsTest()
-    testmetrics.runTest()
+    # testmetrics = MetricsTest()
+    # testmetrics.runTest()
 
     double_metrics()
